@@ -33,7 +33,7 @@ public class Application {
                 sshConnection.sendCommand(in + "\n");
 
                 try {
-                    Thread.sleep(300);
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
