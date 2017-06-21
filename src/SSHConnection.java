@@ -73,7 +73,7 @@ public class SSHConnection {
     }
 
     // function to receive data from ssh server
-    public String receiveData () {
+    public String receiveData() {
 
         String data = "";
 
@@ -88,12 +88,19 @@ public class SSHConnection {
                     available = available - byteRead;
                     data += new String(buffer);
                 }
+
+                data = data.replace("grad@grad:~$", "");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         return data;
+    }
+
+    public String replaceCommand(String result, String command) {
+        result = result.replace(command, "");
+        return result;
     }
 
     // close function to close all in/out ssh streams

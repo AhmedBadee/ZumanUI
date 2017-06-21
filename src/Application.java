@@ -7,6 +7,7 @@ public class Application {
 
     public static void main (String[] args) {
 
+        String output;
         boolean connectionState = false;
 
         SSHConnection sshConnection = new SSHConnection();
@@ -22,24 +23,31 @@ public class Application {
                 e.printStackTrace();
             }
 
-            System.out.println("Result: " + sshConnection.receiveData());
+            System.out.println(sshConnection.receiveData());
 
-            Scanner scanner = new Scanner(System.in);
-            String in = scanner.nextLine();
+            while (true) {
+                Scanner scanner = new Scanner(System.in);
+                String in = scanner.nextLine();
 
-            // Send Command
-            sshConnection.sendCommand(in + "\n");
+                // Send Command
+                sshConnection.sendCommand(in + "\n");
 
-            try {
-                Thread.sleep(300);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                output = sshConnection.replaceCommand(sshConnection.receiveData(), in);
+
+                System.out.println(output);
+
+                // Close connection
+                if (in.equals("exit")) {
+                    sshConnection.close();
+                    break;
+                }
             }
-
-            System.out.println("Result: " + sshConnection.receiveData());
-
-            // Close connection
-            sshConnection.close();
         } else {
             System.out.println("Can't connect \n");
         }
