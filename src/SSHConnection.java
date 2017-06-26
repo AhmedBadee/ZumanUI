@@ -14,13 +14,13 @@ public class SSHConnection {
     // Create SSH Session
     private Session session = null;
     // Create new SSH Channel
-    private Channel channel = null;
+    private ChannelShell channel = null;
 
     private InputStream sshInputStream   = null;
     private OutputStream sshOutputStream = null;
 
     // new SSH Connection
-    public boolean openConnection(String host, int port, String username, String password, int timeout) {
+    public boolean openConnection(String host, int port, String username, String password, int timeout, String xhost, int xport) {
 
         boolean connectionResult = false;
 
@@ -37,9 +37,16 @@ public class SSHConnection {
             this.session = this.jSch.getSession(username, host, port);
             // Set password
             this.session.setPassword(password);
+
+            this.session.setX11Host(xhost);
+            this.session.setX11Port(xport + 6000);
+
             this.session.connect(timeout);
             // Get channel to connect with ssh server
-            this.channel = this.session.openChannel("shell");
+            this.channel = (ChannelShell) this.session.openChannel("shell");
+
+            channel.setXForwarding(true);
+
             //Connect to channel
             this.channel.connect();
 

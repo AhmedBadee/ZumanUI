@@ -5,51 +5,67 @@ import java.util.Scanner;
  */
 public class Application {
 
-    public static void main (String[] args) {
+    private String host     = "192.168.1.103";
+    private int port        = 22;
+    private String username = "ahmed";
+    private String password = "password";
+    private int timeout     = 120000;
 
-        String output;
-        boolean connectionState = false;
+    private String xhost    = "127.0.0.1";
+    private int xport       = 10;
 
-        SSHConnection sshConnection = new SSHConnection();
+    private boolean connectionState = false;
 
-        connectionState = sshConnection.openConnection("192.168.1.108", 22, "grad", "123456789", 120000);
+    private SSHConnection sshConnection;
 
-        if (connectionState == true) {
+    Application() {
+
+        sshConnection = new SSHConnection();
+
+        this.connectionState = this.sshConnection.openConnection(
+                this.host,
+                this.port,
+                this.username,
+                this.password,
+                this.timeout,
+                this.xhost,
+                this.xport
+        );
+
+        if (this.connectionState) {
             System.out.println("Connected Successfully \n");
 
             try {
-                Thread.sleep(300);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            System.out.println(sshConnection.receiveData());
-
-            while (true) {
-                Scanner scanner = new Scanner(System.in);
-                String in = scanner.nextLine();
-
-                // Send Command
-                sshConnection.sendCommand(in + "\n");
-
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                output = sshConnection.replaceCommand(sshConnection.receiveData(), in);
-
-                System.out.println(output);
-
-                // Close connection
-                if (in.equals("exit")) {
-                    sshConnection.close();
-                    break;
-                }
-            }
+            System.out.println(this.sshConnection.receiveData());
         } else {
             System.out.println("Can't connect \n");
         }
+    }
+
+    public void executeCommand(String command) {
+
+        String output;
+
+        this.sshConnection.sendCommand(command + "\n");
+        System.out.println(command + "\n");
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        output = this.sshConnection.replaceCommand(this.sshConnection.receiveData(), command);
+
+        System.out.println(output);
+    }
+
+    public void exit() {
+        this.sshConnection.close();
     }
 }
