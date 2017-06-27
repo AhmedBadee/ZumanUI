@@ -5,8 +5,10 @@ import javax.swing.*;
  */
 public class GUI {
 
+    private JFrame frame;
+
     GUI() {
-        JFrame frame = new JFrame("ZUMAN");
+        frame = new JFrame("ZUMAN");
         frame.setBounds(100, 100, 500, 500);
         frame.setVisible(true);
     }

@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 /**
  * Created by ahmed on 6/19/17.
  */
@@ -8,7 +6,7 @@ public class Application {
     private String host     = "192.168.1.103";
     private int port        = 22;
     private String username = "ahmed";
-    private String password = "password";
+    private String password = "AbdElsalam";
     private int timeout     = 120000;
 
     private String xhost    = "127.0.0.1";

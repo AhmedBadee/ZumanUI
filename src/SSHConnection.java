@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-/**
- * Created by ahmed on 6/19/17.
- */
 public class SSHConnection {
 
     // Create JSch variable
